@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feed-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hipstergram 
+  template:
+    metadata:
+      labels:
+        app: hipstergram 
+    spec:
+      containers:
+        - image: klemenstanic/feed-api:latest
+          name: feed-api
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: feed-api
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: hipstergram 
