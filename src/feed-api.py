@@ -42,7 +42,7 @@ def feed():
 def mejnik():
     out = {"clani": ["lk2633", "ks2411"],
             "opis_projekta": "Nas projekt imitira aplikacijo Instagram.",
-            "mikrostoritve": ["http://20.62.246.104:8080/v1/user/1", "http://40.88.202.1:8080/v1/videos/list"],
+            "mikrostoritve": ["http://20.62.245.206:8080/v1/user/1", "http://20.62.246.87:8080/v1/videos/list"],
             "github": ["https://github.com/RSO-projekt-2020/users-api", "https://github.com/RSO-projekt-2020/videos-api", "https://github.com/RSO-projekt-2020/feed-api"],
             "travis": ["https://github.com/RSO-projekt-2020/users-api/actions", "https://github.com/RSO-projekt-2020/videos-api/actions", "https://github.com/RSO-projekt-2020/feed-api/actions"],
             "dockerhub": ["https://hub.docker.com/r/klemenstanic/users-api", "https://hub.docker.com/r/klemenstanic/video-api", "https://hub.docker.com/r/klemenstanic/feed-api"],
