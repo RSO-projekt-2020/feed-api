@@ -29,7 +29,7 @@ def private_feed(token, user_id):
 # views
 @app.route(route + '/feed', methods=['GET'])
 def feed():
-    if request.headers['Authorization'] is None:
+    if 'Authorization' is not in request.headers.keys():
         feed = public_feed()
     else:
         token = request.headers.get('Authorization')
