@@ -1,5 +1,4 @@
 from flask import *
-from flask_sqlalchemy import SQLAlchemy
 import datetime
 from os import environ
 import requests
@@ -8,36 +7,6 @@ route = '/v1'
 app = Flask(__name__)
 app.config['USERS_API_URI'] = 'http://users-api:8080/v1' # environ['USERS_API_URI'] 
 app.config['VIDEOS_API_URI'] = 'http://videos-api:8080/v1' # environ['VIDEOS_API_URI']
-
-
-# models
-class Video(db.Model):
-    __tablename__ = 'videos'
-
-    video_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer)
-    title = db.Column(db.String)
-    description = db.Column(db.String)
-    width = db.Column(db.String)
-    height = db.Column(db.String)
-    created_on = db.Column(db.String)
-    path = db.Column(db.String)
-
-    def __init__(self, title, description, w, h, ts, path):
-        self.title = title
-        self.description = description
-        self.width = w
-        self.height = h
-        self.created_on = str(datetime.datetime.utcnow())
-        self.path = path
-
-    def to_dict(self):
-        tmp = {'title': self.title,
-               'description': self.description,
-               'width': self.width,
-               'height': self.height,
-               'created_on': self.created_on}
-        return tmp
 
 
 # functions
