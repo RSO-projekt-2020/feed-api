@@ -6,8 +6,8 @@ import requests
 
 route = '/v1'
 app = Flask(__name__)
-app.config['USERS_API_URI'] = environ['USERS_API_URI'] 
-app.config['VIDEOS_API_URI'] = environ['VIDEOS_API_URI']
+app.config['USERS_API_URI'] = 'http://users-api:8080/v1' # environ['USERS_API_URI'] 
+app.config['VIDEOS_API_URI'] = 'http://videos-api:8080/v1' # environ['VIDEOS_API_URI']
 
 
 # models
@@ -71,13 +71,13 @@ def feed():
 
 @app.route(route + '/mejnik', methods=['GET'])
 def mejnik():
-    out = {"clani": ["lk2433", "ks2611"],
-            "opis_projekta": "Nas projekt implementira aplikacijo za oddajo nepremicnin.",
-            "mikrostoritve": ["http://35.189.96.118:8081/v1/orders", "http://35.197.209.159:8080/v1/customers/"],
+    out = {"clani": ["lk2633", "ks2411"],
+            "opis_projekta": "Nas projekt imitira aplikacijo Instagram.",
+            "mikrostoritve": [app.config['USERS_API_URI'] + "/v1/users/1", app.config['VIDEOS_API_URI'] + "/v1//videos/list"],
             "github": ["https://github.com/RSO-projekt-2020/users-api", "https://github.com/RSO-projekt-2020/videos-api", "https://github.com/RSO-projekt-2020/feed-api"],
             "travis": ["https://github.com/RSO-projekt-2020/users-api/actions", "https://github.com/RSO-projekt-2020/videos-api/actions", "https://github.com/RSO-projekt-2020/feed-api/actions"],
             "dockerhub": ["https://hub.docker.com/r/klemenstanic/users-api", "https://hub.docker.com/r/klemenstanic/video-api", "https://hub.docker.com/r/klemenstanic/feed-api"],
-            }
+        }
     return make_response(out)
 
 
