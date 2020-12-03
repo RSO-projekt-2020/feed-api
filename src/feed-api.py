@@ -6,7 +6,7 @@ import requests
 
 route = '/v1'
 app = Flask(__name__)
-app.config['USERS_API_URI'] = environ['USERS_API_URI']
+app.config['USERS_API_URI'] = environ['USERS_API_URI'] 
 app.config['VIDEOS_API_URI'] = environ['VIDEOS_API_URI']
 
 
@@ -67,6 +67,18 @@ def feed():
         user_id = request.get(app.config['USERS_API_URI'] + '/user/check', headers={'Authorization': token})
         feed = private_feed(token, user_id)
     return make_response({'msg': 'ok', 'feed': feed}) 
+
+
+@app.route(route + '/mejnik', methods=['GET'])
+def mejnik():
+    out = {"clani": ["lk2433", "ks2611"],
+            "opis_projekta": "Nas projekt implementira aplikacijo za oddajo nepremicnin.",
+            "mikrostoritve": ["http://35.189.96.118:8081/v1/orders", "http://35.197.209.159:8080/v1/customers/"],
+            "github": ["https://github.com/RSO-projekt-2020/users-api", "https://github.com/RSO-projekt-2020/videos-api", "https://github.com/RSO-projekt-2020/feed-api"],
+            "travis": ["https://github.com/RSO-projekt-2020/users-api/actions", "https://github.com/RSO-projekt-2020/videos-api/actions", "https://github.com/RSO-projekt-2020/feed-api/actions"],
+            "dockerhub": ["https://hub.docker.com/r/klemenstanic/users-api", "https://hub.docker.com/r/klemenstanic/video-api", "https://hub.docker.com/r/klemenstanic/feed-api"],
+            }
+    return make_response(out)
 
 
 if __name__ == '__main__':
