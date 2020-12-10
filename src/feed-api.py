@@ -3,10 +3,37 @@ import datetime
 from os import environ
 import requests
 
+# logging imports
+import logging
+from logstash_async.handler import AsynchronousLogstashHandler
+from logstash_async.handler import LogstashFormatter
+
+
 route = '/v1'
 app = Flask(__name__)
 app.config['USERS_API_URI'] = 'http://users-api:8080/v1' # environ['USERS_API_URI'] 
 app.config['VIDEOS_API_URI'] = 'http://videos-api:8080/v1' # environ['VIDEOS_API_URI']
+
+# Logging setup
+# Create the logger and set it's logging level
+logger = logging.getLogger("logstash")
+logger.setLevel(logging.INFO)        
+
+# Create the handler
+handler = AsynchronousLogstashHandler(
+    host='dc3c93d8-953f-422a-b849-4a82920625dc-ls.logit.io',
+    port=17785, 
+    ssl_enable=True, 
+    ssl_verify=False,
+    database_path='')
+
+# Here you can specify additional formatting on your log record/message
+formatter = LogstashFormatter()
+handler.setFormatter(formatter)
+
+# Assign handler to the logger
+logger.addHandler(handler)
+
 
 
 # functions
@@ -35,6 +62,8 @@ def feed():
         token = request.headers.get('Authorization')
         user_id = request.get(app.config['USERS_API_URI'] + '/user/check', headers={'Authorization': token})
         feed = private_feed(token, user_id)
+        logger.info("200 - OK")
+
     return make_response({'msg': 'ok', 'feed': feed}) 
 
 
@@ -47,6 +76,7 @@ def mejnik():
             "travis": ["https://github.com/RSO-projekt-2020/users-api/actions", "https://github.com/RSO-projekt-2020/videos-api/actions", "https://github.com/RSO-projekt-2020/feed-api/actions"],
             "dockerhub": ["https://hub.docker.com/r/klemenstanic/users-api", "https://hub.docker.com/r/klemenstanic/video-api", "https://hub.docker.com/r/klemenstanic/feed-api"],
         }
+    logger.info("200 - OK")
     return make_response(out)
 
 
