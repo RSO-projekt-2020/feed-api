@@ -14,15 +14,21 @@ app = Flask(__name__)
 app.config['USERS_API_URI'] = 'http://users-api:8080/v1' # environ['USERS_API_URI'] 
 app.config['VIDEOS_API_URI'] = 'http://videos-api:8080/v1' # environ['VIDEOS_API_URI']
 
+# -------------------------------------------
 # Logging setup
+# -------------------------------------------
 # Create the logger and set it's logging level
 logger = logging.getLogger("logstash")
 logger.setLevel(logging.INFO)        
 
+log_endpoint_uri = environ["LOGS_URI"]
+log_endpoint_port = environ["LOGS_PORT"]
+
+
 # Create the handler
 handler = AsynchronousLogstashHandler(
-    host='dc3c93d8-953f-422a-b849-4a82920625dc-ls.logit.io',
-    port=17785, 
+    host=log_endpoint_uri,
+    port=log_endpoint_port, 
     ssl_enable=True, 
     ssl_verify=False,
     database_path='')
