@@ -28,7 +28,7 @@ log_endpoint_port = environ["LOGS_PORT"]
 # Create the handler
 handler = AsynchronousLogstashHandler(
     host=log_endpoint_uri,
-    port=log_endpoint_port, 
+    port=int(log_endpoint_port), 
     ssl_enable=True, 
     ssl_verify=False,
     database_path='')
