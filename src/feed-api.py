@@ -40,6 +40,8 @@ handler.setFormatter(formatter)
 # Assign handler to the logger
 logger.addHandler(handler)
 
+print("Uri: " + log_endpoint_uri)
+print("PORT: " + str(log_endpoint_port))
 
 
 # functions
