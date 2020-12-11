@@ -21,14 +21,14 @@ app.config['VIDEOS_API_URI'] = 'http://videos-api:8080/v1' # environ['VIDEOS_API
 logger = logging.getLogger("logstash")
 logger.setLevel(logging.INFO)        
 
-log_endpoint_uri = environ["LOGS_URI"]
-log_endpoint_port = environ["LOGS_PORT"]
+log_endpoint_uri = str(environ["LOGS_URI"]).strip()
+log_endpoint_port = int(environ["LOGS_PORT"].strip())
 
 
 # Create the handler
 handler = AsynchronousLogstashHandler(
     host=log_endpoint_uri,
-    port=int(log_endpoint_port), 
+    port=log_endpoint_port, 
     ssl_enable=True, 
     ssl_verify=False,
     database_path='')
