@@ -68,7 +68,7 @@ def feed():
         feed = public_feed()
     else:
         token = request.headers.get('Authorization')
-        user_id = request.get(app.config['USERS_API_URI'] + '/user/check', headers={'Authorization': token})
+        user_id = requests.get(app.config['USERS_API_URI'] + '/user/check', headers={'Authorization': token})
         feed = private_feed(token, user_id)
         logger.info("200 - OK")
 
