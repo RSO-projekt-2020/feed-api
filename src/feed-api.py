@@ -1,4 +1,5 @@
 from flask import *
+from flask_cors import CORS
 import datetime
 from os import environ
 import requests
@@ -13,6 +14,7 @@ from logstash_async.handler import LogstashFormatter
 
 route = '/v1'
 app = Flask(__name__)
+CORS(app, resources={r"/v1/*": {"origins": "*"}})
 app.config['USERS_API_URI'] = 'http://users-api:8080/v1' # environ['USERS_API_URI'] 
 app.config['VIDEOS_API_URI'] = 'http://videos-api:8080/v1' # environ['VIDEOS_API_URI']
 
