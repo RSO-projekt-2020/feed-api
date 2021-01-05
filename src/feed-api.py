@@ -62,7 +62,7 @@ def private_feed(token, user_id, request_id):
         id = id['user_id']
         video_response = requests.get(app.config['VIDEOS_API_URI'] + '/videos/list/{}'.format(id), headers={'X-Request-ID': request_id})
         feed.append(video_response.json()['content'])
-    feed.sort(reverse=True, key=lambda x: x['created_on'])
+    #feed.sort(reverse=True, key=lambda x: x['created_on'])
     return feed
 
 
