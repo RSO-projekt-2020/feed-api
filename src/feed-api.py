@@ -2,6 +2,8 @@ from flask import *
 import datetime
 from os import environ
 import requests
+import string
+import random
 
 # logging imports
 import logging
@@ -45,32 +47,37 @@ print("PORT: " + str(log_endpoint_port))
 
 
 # functions
-def public_feed():
-    response = request.get(app.config['VIDEOS_API_URI'] + '/videos/list')
+def public_feed(request_id):
+    response = request.get(app.config['VIDEOS_API_URI'] + '/videos/list', headers={'X-Request-ID': request_id})
     return [x for x in response.json()['content']]
 
 
-def private_feed(token, user_id):
-    user_response = requests.get(app.config['USERS_API_URI'] + '/follow', headers={'Authorization': token})
+def private_feed(token, user_id, request_id):
+    user_response = requests.get(app.config['USERS_API_URI'] + '/follow', headers={'Authorization': token, 'X-Request-ID': request_id})
     following = user_response.json()['following']
     feed = []
     for id in following:
-        video_response = requests.get(app.config['VIDEOS_API_URI'] + '/videos/list/{}'.format(id))
+        video_response = requests.get(app.config['VIDEOS_API_URI'] + '/videos/list/{}'.format(id), headers={'X-Request-ID': request_id})
         feed.append(video_response.json()['content'])
     feed.sort(reverse=True, key=lambda x: x['created_on'])
     return feed
 
 
+def generate_request_id():
+    return ''.join(random.choice(string.ascii_letters) for x in range(10))
+ 
+
 # views
 @app.route(route + '/feed', methods=['GET'])
 def feed():
+    request_id = generate_request_id() 
     if 'Authorization' not in request.headers.keys():
-        feed = public_feed()
+        feed = public_feed(request_id)
     else:
         token = request.headers.get('Authorization')
-        user_id = requests.get(app.config['USERS_API_URI'] + '/user/check', headers={'Authorization': token}).json()['user_id']
-        feed = private_feed(token, user_id)
-        logger.info("200 - OK")
+        user_id = requests.get(app.config['USERS_API_URI'] + '/user/check', headers={'Authorization': token, 'X-Request-ID': request_id}).json()['user_id']
+        feed = private_feed(token, user_id, request_id)
+    logger.info("200 - OK - id:" + request_id)
 
     return make_response({'msg': 'ok', 'feed': feed}) 
 
