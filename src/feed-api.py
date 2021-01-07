@@ -65,6 +65,8 @@ def private_feed(token, user_id, request_id):
             # we need to get user info for video
             user_id = video['user_id']
             video['user_info'] = requests.get(app.config['USERS_API_URI'] + '/user/{}'.format(user_id), headers={'X-Request-ID': request_id}).json()
+            # wee need to get video comments
+            video['comments'] = request.get(app.config['VIDEOS_API_URI'] + 'videos/{}/comments'.format(video['video_id']), headers={'X-Request-ID': request_id}).json()['content']
             feed.append(video)
     feed.sort(reverse=True, key=lambda x: x['created_on'])
     return feed
