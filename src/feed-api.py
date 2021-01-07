@@ -44,10 +44,6 @@ handler.setFormatter(formatter)
 # Assign handler to the logger
 logger.addHandler(handler)
 
-print("Uri: " + log_endpoint_uri)
-print("PORT: " + str(log_endpoint_port))
-
-
 # functions
 def public_feed(request_id):
     response = request.get(app.config['VIDEOS_API_URI'] + '/videos/list', headers={'X-Request-ID': request_id})
@@ -66,7 +62,7 @@ def private_feed(token, user_id, request_id):
             user_id = video['user_id']
             video['user_info'] = requests.get(app.config['USERS_API_URI'] + '/user/{}'.format(user_id), headers={'X-Request-ID': request_id}).json()
             # wee need to get video comments
-            video['comments'] = requests.get(app.config['VIDEOS_API_URI'] + 'videos/{}/comments'.format(video['video_id']), headers={'X-Request-ID': request_id}).json()['content']
+            video['comments'] = requests.get(app.config['VIDEOS_API_URI'] + '/videos/{}/comments'.format(video['video_id']), headers={'X-Request-ID': request_id}).json()['content']
             feed.append(video)
     feed.sort(reverse=True, key=lambda x: x['created_on'])
     return feed
