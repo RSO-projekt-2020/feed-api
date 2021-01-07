@@ -77,14 +77,14 @@ def generate_request_id():
 def feed():
     request_id = generate_request_id() 
     feed = []
+    logger.info("[feed-api][{}] someone wants his feed".format(request_id))
     if 'Authorization' not in request.headers.keys():
         feed = public_feed(request_id)
     else:
         token = request.headers.get('Authorization')
         user_id = requests.get(app.config['USERS_API_URI'] + '/user/check', headers={'Authorization': token, 'X-Request-ID': request_id}).json()['user_id']
         feed = private_feed(token, user_id, request_id)
-    logger.info("200 - OK - id:" + request_id)
-
+    
     return make_response({'msg': 'ok', 'feed': feed}) 
 
 
@@ -97,7 +97,7 @@ def mejnik():
             "travis": ["https://github.com/RSO-projekt-2020/users-api/actions", "https://github.com/RSO-projekt-2020/videos-api/actions", "https://github.com/RSO-projekt-2020/feed-api/actions"],
             "dockerhub": ["https://hub.docker.com/r/klemenstanic/users-api", "https://hub.docker.com/r/klemenstanic/video-api", "https://hub.docker.com/r/klemenstanic/feed-api"],
         }
-    logger.info("200 - OK")
+    logger.info("[feed-api] will we get a good grade?")
     return make_response(out)
 
 
