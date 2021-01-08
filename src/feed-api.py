@@ -17,6 +17,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/v1/*": {"origins": "*"}})
 app.config['USERS_API_URI'] = 'http://users-api:8080/v1' # environ['USERS_API_URI'] 
 app.config['VIDEOS_API_URI'] = 'http://videos-api:8080/v1' # environ['VIDEOS_API_URI']
+app.config['COMMENTS_API_URI'] = 'http://comments-api:8080/v1' # environ['COMMENTS_API_URI']
 
 # -------------------------------------------
 # Logging setup
@@ -62,7 +63,7 @@ def private_feed(token, user_id, request_id):
             user_id = video['user_id']
             video['user_info'] = requests.get(app.config['USERS_API_URI'] + '/user/{}'.format(user_id), headers={'X-Request-ID': request_id}).json()
             # wee need to get video comments
-            video['comments'] = requests.get(app.config['VIDEOS_API_URI'] + '/videos/{}/comments'.format(video['video_id']), headers={'X-Request-ID': request_id}).json()['content']
+            video['comments'] = requests.get(app.config['COMMENTS_API_URI'] + '/videos/{}/comments'.format(video['video_id']), headers={'X-Request-ID': request_id}).json()['content']
             feed.append(video)
     feed.sort(reverse=True, key=lambda x: x['created_on'])
     return feed
